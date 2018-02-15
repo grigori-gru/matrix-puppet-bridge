@@ -32,6 +32,7 @@
     "tmp": "^0.0.31"
   },
   "devDependencies": {
+    "matrix-mock-request": "1.2.1",
     "eslint": "^3.12.2",
     "jsdoc": "^3.4.3"
   },

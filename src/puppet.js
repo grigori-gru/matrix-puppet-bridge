@@ -1,10 +1,17 @@
 const Promise = require('bluebird');
 const matrixSdk = require("matrix-js-sdk");
+const HttpBackend = require("matrix-mock-request");
 const fs = require('fs');
 const readFile = Promise.promisify(fs.readFile);
 const writeFile = Promise.promisify(fs.writeFile);
 const read = Promise.promisify(require('read'));
 const whyPuppeting = 'https://github.com/kfatehi/matrix-appservice-imessage/commit/8a832051f79a94d7330be9e252eea78f76d774bc';
+
+
+if (process.env.NODE_ENV === 'test') {
+    const httpBackend = new HttpBackend();
+    matrixSdk.request(httpBackend.requestFn);
+}
 
 const readConfigFile = (jsonFile) => {
   return readFile(jsonFile).then(buffer => {
@@ -124,7 +131,7 @@ class Puppet {
           return writeFile(this.jsonFile, JSON.stringify(Object.assign({}, config, {
             puppet: {
               id,
-              localpart, 
+              localpart,
               token: accessDat.access_token
             }
           }), null, 2)).then(()=>{
